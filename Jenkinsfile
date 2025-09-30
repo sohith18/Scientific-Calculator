@@ -39,9 +39,9 @@ pipeline {
                     docker.withRegistry('', 'dockerhub-creds') {
                         sh 'docker push $DOCKERHUB_USR/scientific-calculator:latest'
                     }
-
-                    sh 'docker logout'
                 }
+
+                sh 'docker logout'
             }
         }
 
