@@ -7,13 +7,13 @@ pipeline {
         githubPush()
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/sohith18/Scientific-Calculator.git',
-                    branch: 'main',
-                    credentialsId: 'sci-calc-https'
-            }
-        }
+//         stage('Checkout') {
+//             steps {
+//                 git url: 'https://github.com/sohith18/Scientific-Calculator.git',
+//                     branch: 'main',
+//                     credentialsId: 'sci-calc-https'
+//             }
+//         }
         stage('Env check') {
             steps {
                 sh 'mvn -v'
