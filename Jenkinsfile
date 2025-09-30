@@ -31,9 +31,9 @@ pipeline {
         stage('Build Docker Image and Push') {
             steps{
                 sh """
-                    docker build -t ${DOCKERHUB_USR}/scientific-calculator:latest .
-                    echo ${DOCKERHUB_PSW} | docker login -u "${DOCKERHUB_USR}" --password-stdin
-                    docker push ${DOCKERHUB_USR}/scientific-calculator:latest
+                    docker build -t $DOCKERHUB_USR/scientific-calculator:latest .
+                    echo $DOCKERHUB_PSW | docker login -u $DOCKERHUB_USR --password-stdin
+                    docker push $DOCKERHUB_USR/scientific-calculator:latest
                     docker logout
                 """
             }
