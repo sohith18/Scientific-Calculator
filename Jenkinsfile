@@ -34,12 +34,17 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
-            steps{
-                sh 'echo $DOCKERHUB_PSW | docker login -u $DOCKERHUB_USR --password-stdin'
-                sh 'docker push $DOCKERHUB_USR/scientific-calculator:latest'
-                sh 'docker logout'
+            steps {
+                script {
+                    docker.withRegistry('', 'dockerhub-creds') {
+                        sh 'docker push $DOCKERHUB_USR/scientific-calculator:latest'
+                    }
+
+                    sh 'docker logout'
+                }
             }
         }
+
 
     }
     post {
