@@ -28,16 +28,19 @@ pipeline {
                 sh 'mvn -B -e clean package'
             }
         }
-        stage('Build Docker Image and Push') {
+        stage('Build Docker Image') {
             steps{
-                sh '
-                    docker build -t $DOCKERHUB_USR/scientific-calculator:latest .
-                    echo $DOCKERHUB_PSW | docker login -u $DOCKERHUB_USR --password-stdin
-                    docker push $DOCKERHUB_USR/scientific-calculator:latest
-                    docker logout
-                    '
+                sh 'docker build -t $DOCKERHUB_USR/scientific-calculator:latest .'
             }
         }
+        stage('Push Docker Image') {
+            steps{
+                sh 'echo $DOCKERHUB_PSW | docker login -u $DOCKERHUB_USR --password-stdin'
+                sh 'docker push $DOCKERHUB_USR/scientific-calculator:latest'
+                sh 'docker logout'
+            }
+        }
+
     }
     post {
         always {
