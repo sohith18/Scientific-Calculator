@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Build and Test') {
             steps {
-                sh 'mvn -B clean test'
+                sh 'mvn -B -e clean package'
             }
         }
     }
