@@ -10,6 +10,14 @@
     container_name: "scientific-calculator"
 
   tasks:
+    - name: Remove existing container (if present)
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+        force_kill: true
+        keep_volumes: false
+        removal_wait_timeout: 60
+
     - name: Pull image
       community.docker.docker_image:
         name: "{{ image_name }}"
