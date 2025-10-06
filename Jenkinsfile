@@ -47,7 +47,7 @@ pipeline {
         stage('Deploy locally with Ansible') {
           steps {
             ansiblePlaybook(
-              playbook: 'ansible/deploy-local.yml',
+              playbook: 'playbook.yml',
               inventory: 'localhost,',
               become: true,
               extraVars: [
