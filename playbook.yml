@@ -1,5 +1,5 @@
 ---
-- name: Pull image and run container locally (no SSH)
+- name: Pull image and run container locally
   hosts: localhost
   connection: local
   become: true
@@ -22,8 +22,8 @@
         name: "{{ container_name }}"
         image: "{{ image_name }}"
         state: started
-        restart_policy: always
+        restart_policy: no
+        detach: true
+        tty: true
+        interactive: true
         pull: false
-        ports: "{{ (host_port is defined and container_port is defined) | ternary([host_port ~ ':' ~ container_port], omit) }}"
-        env:
-          JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport"

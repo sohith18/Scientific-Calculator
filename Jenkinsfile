@@ -46,22 +46,9 @@ pipeline {
         }
         stage('Deploy locally with Ansible') {
           steps {
-            ansiblePlaybook(
-              playbook: 'playbook.yml',
-              inventory: 'localhost,',
-              become: true,
-              extraVars: [
-                image_name: "${env.DOCKERHUB_USR}/scientific-calculator:latest",
-                container_name: "scientific-calculator",
-                host_port: "8080",
-                container_port: "8080"
-              ]
-            )
+            sh 'ansible-playbook -i inventory.ini playbook.yml'
           }
         }
-
-
-
     }
     post {
         always {
