@@ -19,7 +19,6 @@ public class CalculatorTest {
 
     @Test
     public void testSqRoot_withNegativeNumber() {
-        // sqrt of negative is NaN by Math.sqrt
         assertTrue(Double.isNaN(calculator.sqRoot(-4)));
     }
 
@@ -34,7 +33,12 @@ public class CalculatorTest {
         assertEquals(3628800, calculator.factorial(10));
     }
 
-    // Optional: factorial negative input behavior not defined; could add test if method updated
+    @Test
+    public void testFactorial_negative_throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> calculator.factorial(-1));
+        assertEquals("Number must be non-negative", ex.getMessage());
+    }
 
     @Test
     public void testNaturalLog_positiveNumber() {
@@ -46,16 +50,19 @@ public class CalculatorTest {
         assertEquals(0.0, calculator.naturalLog(1), 1e-9);
     }
 
+    // Updated: zero should throw per Calculator.naturalLog
     @Test
-    public void testNaturalLog_zero() {
-        // Math.log(0) returns -Infinity
-        assertEquals(Double.NEGATIVE_INFINITY, calculator.naturalLog(0));
+    public void testNaturalLog_zero_throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> calculator.naturalLog(0));
+        assertEquals("Number must be positive", ex.getMessage());
     }
 
     @Test
-    public void testNaturalLog_negativeNumber() {
-        // Math.log(negative) is NaN
-        assertTrue(Double.isNaN(calculator.naturalLog(-5)));
+    public void testNaturalLog_negative_throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> calculator.naturalLog(-5));
+        assertEquals("Number must be positive", ex.getMessage());
     }
 
     @Test
@@ -85,7 +92,7 @@ public class CalculatorTest {
 
     @Test
     public void testPower_zeroBase_zeroExponent() {
-        // Math.pow(0, 0) returns 1
+        // Math.pow(0, 0) returns 1.0
         assertEquals(1.0, calculator.power(0, 0), 1e-9);
     }
 }
