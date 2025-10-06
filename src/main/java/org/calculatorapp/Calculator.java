@@ -28,6 +28,10 @@ public class Calculator{
     public static void main(String[] args){
         //Making command line driven calculator
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("Press Enter to Start");
+        sc.nextLine();
+        System.out.println("Welcome to Calculator");
         while(true){
             System.out.println("Available operations:");
             System.out.println("1. Square Root");
