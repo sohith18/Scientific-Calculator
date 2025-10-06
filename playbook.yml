@@ -1,0 +1,33 @@
+---
+- name: Pull image and run container on managed hosts
+  hosts: docker_hosts
+  become: true
+  collections:
+    - community.docker
+
+  vars:
+    image_name: "sohith18/scientific-calculator:latest"
+    container_name: "scientific-calculator"
+    host_port: "8080"
+    container_port: "8080"
+
+  tasks:
+    - name: Ensure Python Docker SDK is present
+      ansible.builtin.pip:
+        name: docker
+
+    - name: Pull image
+      community.docker.docker_image:
+        name: "{{ image_name }}"
+        source: pull
+
+    - name: Ensure container is running
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image_name }}"
+        state: started
+        restart_policy: always
+        pull: false
+        ports: "{{ (host_port is defined and container_port is defined) | ternary([host_port ~ ':' ~ container_port], omit) }}"
+        env:
+          JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport"

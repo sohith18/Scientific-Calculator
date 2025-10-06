@@ -44,6 +44,17 @@ pipeline {
                 sh 'docker logout'
             }
         }
+        stage('Deploy via Ansible') {
+          steps {
+            ansiblePlaybook(
+              credentialsId: 'ansible-ssh',
+              installation: 'ansible',
+              inventory: 'inventory.ini',
+              playbook: 'playbook.yml',
+              extras: "--extra-vars \"image_name=${DOCKERHUB_USR}/scientific-calculator:latest container_name=scientific-calculator host_port=8080 container_port=8080\""
+            )
+          }
+        }
 
 
     }
