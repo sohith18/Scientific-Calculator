@@ -9,6 +9,8 @@ public class Calculator{
     }
 
     public int factorial(int a){
+        if(a<0)
+            throw new IllegalArgumentException("Number must be non-negative");
         if(a == 0)
             return 1;
         int fact = 1;
@@ -19,6 +21,8 @@ public class Calculator{
     }
 
     public double naturalLog(double a){
+        if(a <= 0)
+            throw new IllegalArgumentException("Number must be positive");
         return Math.log(a);
     }
 
@@ -34,47 +38,61 @@ public class Calculator{
         System.out.println("Welcome to Calculator");
         System.out.println();
         while(true){
-            System.out.println("Available operations:");
-            System.out.println("1. Square Root");
-            System.out.println("2. Factorial");
-            System.out.println("3. Natural Log");
-            System.out.println("4. Power");
-            System.out.println("5. Exit");
-            System.out.print("Choose an operation (1-5): ");
+            try{
+                System.out.println("Available operations:");
+                System.out.println("1. Square Root");
+                System.out.println("2. Factorial");
+                System.out.println("3. Natural Log");
+                System.out.println("4. Power");
+                System.out.println("5. Exit");
+                System.out.print("Choose an operation (1-5): ");
 
-            int option = sc.nextInt();
+                int option = sc.nextInt();
 
-            if(option == 5){
-                System.out.println("Exited the calculator.");
-                break;
+                if(option == 5){
+                    System.out.println("Exited the calculator.");
+                    break;
+                }
+                Calculator calc = new Calculator();
+
+                switch(option){
+                    case 1:
+                        System.out.print("Enter a number: ");
+                        double num1 = sc.nextDouble();
+                        System.out.println("Square Root: " + calc.sqRoot(num1));
+                        break;
+                    case 2:
+                        System.out.print("Enter a number: ");
+                        int num2 = sc.nextInt();
+                        System.out.println("Factorial: " + calc.factorial(num2));
+                        break;
+                    case 3:
+                        System.out.print("Enter a number: ");
+                        double num3 = sc.nextDouble();
+                        System.out.println("Natural Log: " + calc.naturalLog(num3));
+                        break;
+                    case 4:
+                        System.out.print("Enter base number: ");
+                        double base = sc.nextDouble();
+                        System.out.print("Enter exponent number: ");
+                        double exponent = sc.nextDouble();
+                        System.out.println("Power: " + calc.power(base, exponent));
+                        break;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                }
             }
-            Calculator calc = new Calculator();
-
-            switch(option){
-                case 1:
-                    System.out.print("Enter a number: ");
-                    double num1 = sc.nextDouble();
-                    System.out.println("Square Root: " + calc.sqRoot(num1));
-                    break;
-                case 2:
-                    System.out.print("Enter a number: ");
-                    int num2 = sc.nextInt();
-                    System.out.println("Factorial: " + calc.factorial(num2));
-                    break;
-                case 3:
-                    System.out.print("Enter a number: ");
-                    double num3 = sc.nextDouble();
-                    System.out.println("Natural Log: " + calc.naturalLog(num3));
-                    break;
-                case 4:
-                    System.out.print("Enter base number: ");
-                    double base = sc.nextDouble();
-                    System.out.print("Enter exponent number: ");
-                    double exponent = sc.nextDouble();
-                    System.out.println("Power: " + calc.power(base, exponent));
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+            catch(Exception e){
+                if (e instanceof IllegalArgumentException) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                else if (e instanceof java.util.InputMismatchException) {
+                    System.out.println("Error: Invalid input type. Please enter numeric values.");
+                    sc.next(); // Clear the invalid input
+                }
+                else {
+                    System.out.println("An unexpected error occurred: " + e.getMessage());
+                }
             }
 
             System.out.println("-----------------------------");
