@@ -46,11 +46,11 @@ pipeline {
         }
         stage('Deploy locally with Ansible') {
             steps {
+                script{
+                    sshagent(credentials: ['ansible-ssh-key']) {
 
-                sshagent(credentials: ['ansible-ssh-key']) {
-                    sh 'ansible-playbook -i inventory.ini playbook.yml'
+                    }
                 }
-
             }
         }
     }
