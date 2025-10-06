@@ -49,7 +49,6 @@ pipeline {
             ansiblePlaybook(
               playbook: 'playbook.yml',
               inventory: 'inventory.ini',
-              credentialsId: 'ansible-ssh-key',
             )
           }
         }

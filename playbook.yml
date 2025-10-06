@@ -1,7 +1,7 @@
 ---
 - name: Pull image and run container locally
   hosts: docker_hosts
-  become: true
+  become: false
   collections:
     - community.docker
 
