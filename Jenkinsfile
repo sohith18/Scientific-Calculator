@@ -44,20 +44,39 @@ pipeline {
                 sh 'docker logout'
             }
         }
+        // Jenkinsfile snippet to reveal root cause
         stage('Deploy locally with Ansible') {
-            steps {
-                script{
-                    sshagent(credentials: ['ansible-ssh-key']) {
-                        def exitCode = sh script: 'ansible-playbook -i inventory.ini playbook.yml', returnStatus: true
-                        if (exitCode == 2) {
-                            echo "WARNING: Some Ansible tasks failed or changed"
-                            // Optionally continue or fail based on requirements
-                        } else if (exitCode != 0) {
-                            error "Ansible failed with exit code ${exitCode}"
-                        }
-                    }
+          steps {
+            script {
+              sshagent(credentials: ['ansible-ssh-key']) {
+                ansiColor('xterm') { // requires AnsiColor plugin
+                  withEnv([
+                    'ANSIBLE_FORCE_COLOR=true',
+                    'ANSIBLE_STDOUT_CALLBACK=yaml' // structured, concise output
+                  ]) {
+                    sh '''
+                      set -euxo pipefail
+                      echo "=== ansible --version ==="
+                      ansible --version
+                      echo "=== inventory check ==="
+                      ansible-inventory -i inventory.ini --list | head -200
+                      echo "=== syntax check ==="
+                      ansible-playbook -i inventory.ini playbook.yml --syntax-check
+                    '''
+                  }
                 }
+                // Run playbook and capture exit code without hiding output
+                def rc = sh(script: '''
+                  set -o pipefail
+                  ANSIBLE_FORCE_COLOR=true ANSIBLE_STDOUT_CALLBACK=yaml \
+                  ansible-playbook -i inventory.ini playbook.yml -vvv
+                  echo RC:$?
+                ''', returnStdout: true).trim().split(':')[-1] as Integer
+                echo "Ansible exit code: ${rc}"
+                if (rc != 0) { error "Ansible failed with exit code ${rc}" }
+              }
             }
+          }
         }
 
     }
