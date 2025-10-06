@@ -1,15 +1,18 @@
 ---
-- name: Pull image and run container on managed hosts
-  hosts: docker_hosts
+- name: Pull image and run container locally (no SSH)
+  hosts: localhost
+  connection: local
   become: true
+  gather_facts: false
   collections:
     - community.docker
 
   vars:
     image_name: "sohith18/scientific-calculator:latest"
     container_name: "scientific-calculator"
-    host_port: "8080"
-    container_port: "8080"
+    # Optionally override via --extra-vars:
+    # host_port: "8080"
+    # container_port: "8080"
 
   tasks:
     - name: Ensure Python Docker SDK is present
