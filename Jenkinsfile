@@ -44,15 +44,19 @@ pipeline {
                 sh 'docker logout'
             }
         }
-        stage('Deploy locally with Ansible') {
-            steps {
-                script{
-                    sshagent(credentials: ['ansible-ssh-key']) {
+        stage('Deploy with Ansible (key file)') {
+          steps {
+            withCredentials([sshUserPrivateKey(
+                credentialsId: 'ansible-ssh-key',
+                keyFileVariable: 'SSH_KEY',
+                usernameVariable: 'SSH_USER'
+            )]) {
 
-                    }
-                }
+              sh 'ansible-playbook -i inventory.ini playbook.yml'
             }
+          }
         }
+
     }
     post {
         always {
