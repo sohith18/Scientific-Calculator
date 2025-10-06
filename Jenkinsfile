@@ -44,18 +44,16 @@ pipeline {
                 sh 'docker logout'
             }
         }
-        stage('Deploy with Ansible (key file)') {
+        stage('Deploy with Ansible plugin') {
           steps {
-            withCredentials([sshUserPrivateKey(
-                credentialsId: 'ansible-ssh-key',
-                keyFileVariable: 'SSH_KEY',
-                usernameVariable: 'SSH_USER'
-            )]) {
-
-              sh 'ansible-playbook -i inventory.ini playbook.yml'
-            }
+            ansiblePlaybook(
+              playbook: 'playbook.yml',
+              inventory: 'inventory.ini',
+              credentialsId: 'ansible-ssh-key',
+            )
           }
         }
+
 
     }
     post {
