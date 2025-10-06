@@ -32,6 +32,7 @@ public class Calculator{
         System.out.println("Press Enter to Start");
         sc.nextLine();
         System.out.println("Welcome to Calculator");
+        System.out.println();
         while(true){
             System.out.println("Available operations:");
             System.out.println("1. Square Root");
