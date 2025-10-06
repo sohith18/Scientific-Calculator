@@ -45,16 +45,21 @@ pipeline {
             }
         }
         stage('Deploy locally with Ansible') {
-          steps {
-            script{
-                sshagent(credentials: ['ansible-ssh-key']) {
-                   sh 'ansible-playbook -i inventory.ini playbook.yml'
+            steps {
+                script{
+                    sshagent(credentials: ['ansible-ssh-key']) {
+                        def exitCode = sh script: 'ansible-playbook -i inventory.ini playbook.yml', returnStatus: true
+                        if (exitCode == 2) {
+                            echo "WARNING: Some Ansible tasks failed or changed"
+                            // Optionally continue or fail based on requirements
+                        } else if (exitCode != 0) {
+                            error "Ansible failed with exit code ${exitCode}"
+                        }
+                    }
                 }
             }
-
-
-          }
         }
+
     }
     post {
         always {
