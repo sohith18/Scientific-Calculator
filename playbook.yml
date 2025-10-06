@@ -10,15 +10,8 @@
   vars:
     image_name: "sohith18/scientific-calculator:latest"
     container_name: "scientific-calculator"
-    # Optionally override via --extra-vars:
-    # host_port: "8080"
-    # container_port: "8080"
 
   tasks:
-    - name: Ensure Python Docker SDK is present
-      ansible.builtin.pip:
-        name: docker
-
     - name: Pull image
       community.docker.docker_image:
         name: "{{ image_name }}"
