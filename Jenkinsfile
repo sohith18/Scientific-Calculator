@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps{
-                sh 'docker build -t $DOCKERHUB_USR/scientific-calculator:latest .'
+                sh 'docker built -t $DOCKERHUB_USR/scientific-calculator:latest .'
             }
         }
         stage('Push Docker Image') {
