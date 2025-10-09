@@ -33,8 +33,6 @@ public class Calculator{
         //Making command line driven calculator
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Press Enter to Start");
-        sc.nextLine();
         System.out.println("Welcome to Calculator");
         System.out.println();
         while(true){
