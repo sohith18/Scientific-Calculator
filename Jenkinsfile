@@ -66,11 +66,7 @@ pipeline {
                             Build: ${env.BUILD_NUMBER}
                             Result: ${currentBuild.currentResult}
                             URL: ${env.BUILD_URL}
-                            """,
-                  recipientProviders: [
-                    [$class: 'DevelopersRecipientProvider'],
-                    [$class: 'RequesterRecipientProvider']
-                  ]
+                            """
             )
         }
     }
