@@ -57,8 +57,7 @@ pipeline {
     }
     post {
         always {
-            junit 'target/surefire-reports/*.xml'
-            emailext(
+                  emailext(
                   attachLog: true,
                   to: '$DEFAULT_RECIPIENTS',
                   subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
